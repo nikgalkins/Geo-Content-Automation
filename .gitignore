@@ -1,0 +1,30 @@
+# virtual environment
+venv/
+
+# Credentials and tokens
+GCP JSON/
+*.json
+
+# Python & VS Code ignores
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Temp & cache
+cache/
+*.tmp
+*.bak
+
+# VS Code
+.vscode/
+
+venv.txt
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env.example
