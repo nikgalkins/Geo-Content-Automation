@@ -22,8 +22,10 @@ This repository demonstrates Python-based automation for **geodata enrichment** 
 automatization-scripts/
 │
 ├── ski_lifts/
-│   ├── catedral_lifts_from_osm.py       # Fetch lift coordinates from OSM
-│   └── ski_lifts_automatation.py        # Add POIs to admin panel
+│   ├── catedral_lifts_from_osm.py       # Catedral Alta Patagonia (Argentina)
+│   ├── garmisch_lifts_from_osm.py       # Garmisch-Partenkirchen (Germany)
+│   ├── gudauri_lifts_from_osm.py        # Gudauri (Georgia)
+│   └── ski_lifts_automatation.py        # Upload POIs to admin panel
 │
 ├── GCP JSON/                            # Local credentials (ignored)
 │   └── geo-content-automatization-xxxx.json
@@ -66,17 +68,38 @@ cp .env.example .env
 ## 🧭 Usage
 
 ### 🏔️ Fetch ski lift coordinates (from OSM)
+
+Each resort script reads lift names from Google Sheets and updates
+latitude, longitude, and OSM metadata (E..J columns).
+
 ```bash
+# Catedral Alta Patagonia (Argentina)
 python ski_lifts/catedral_lifts_from_osm.py
+
+# Garmisch-Partenkirchen (Germany)
+python ski_lifts/garmisch_lifts_from_osm.py
+
+# Gudauri (Georgia)
+python ski_lifts/gudauri_lifts_from_osm.py
 ```
 
-### 🏙️ Automate POI creation
+### 🏙️ Upload POIs to Admin (universal uploader)
+
+The universal uploader takes the sheet name and parent region as arguments.
+
 ```bash
-python ski_lifts/ski_lifts_automatation.py
+# Example: Gudauri
+python ski_lifts/admin_upload_from_sheet.py \
+  --spreadsheet "POIs" \
+  --worksheet "Gudauri" \
+  --admin-url "https://content.ostrovok.in/admin/geo/region/add/" \
+  --parent-id "6139982" \
+  --parent-visible "6139982, Gudauri, GE (City)" \
+  --type-visible "Point of Interest"
 ```
 
 **Default behavior:**
-- Parent region: Bariloche (ID 677)  
+- Parent region: specific resort (defined per script)  
 - Type: Point of Interest  
 - Browser runs interactively (`HEADLESS=0`)  
 - Chrome window stays open after execution  
@@ -94,9 +117,20 @@ python ski_lifts/ski_lifts_automatation.py
 | `ADMIN_URL_ADD` | Admin “Add region” page URL |
 | `PARENT_SEARCH_TEXT` | Parent region numeric ID |
 | `TYPE_VISIBLE_TEXT` | Region type dropdown value |
+| `SPREADSHEET_NAME` |
 | `DRY_RUN` | Skip Selenium actions (1 = test mode) |
 | `HEADLESS` | Run Chrome invisibly (1 = headless mode) |
 
+Use --dry-run to preview without Selenium.
+
+And tweak the **Structure** section to include the universal uploader:
+```md
+├── ski_lifts/
+│   ├── catedral_lifts_from_osm.py       # Catedral Alta Patagonia (Argentina)
+│   ├── garmisch_lifts_from_osm.py       # Garmisch-Partenkirchen (Germany)
+│   ├── gudauri_lifts_from_osm.py        # Gudauri (Georgia)
+│   └── admin_upload_from_sheet.py       # Universal admin uploader (any resort/sheet)
+```
 ---
 
 ## 🧪 Example Use Case
