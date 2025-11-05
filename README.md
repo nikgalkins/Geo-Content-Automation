@@ -1,6 +1,12 @@
 # 🗺️ Geo Content Automation Scripts
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![Selenium](https://img.shields.io/badge/Selenium-4.x-brightgreen)
+![GCP](https://img.shields.io/badge/GCP-Sheets%20API-orange)
+![OSM](https://img.shields.io/badge/OpenStreetMap-API-success)
 
-Automation toolkit for managing **geo-related content** — such as ski lifts, POIs, and resort regions — using data from **Google Sheets** and **OpenStreetMap**.
+Automation toolkit for managing **geo-related content** — such as ski lifts, POIs, and resort regions — using data from **Google Sheets (via Google Cloud Platform)** and **OpenStreetMap**.
+
+> **Stack:** Python • Selenium • GCP (Google Sheets API) • Overpass / Nominatim • Django Admin automation
 
 This repository demonstrates Python-based automation for **geodata enrichment** and **content management systems** (Django Admin style), with an emphasis on multilingual support and spatial data accuracy.
 
@@ -22,15 +28,15 @@ This repository demonstrates Python-based automation for **geodata enrichment** 
 automatization-scripts/
 │
 ├── ski_lifts/
-│   ├── catedral_lifts_from_osm.py       # Catedral Alta Patagonia (Argentina)
-│   ├── garmisch_lifts_from_osm.py       # Garmisch-Partenkirchen (Germany)
-│   ├── gudauri_lifts_from_osm.py        # Gudauri (Georgia)
-│   └── ski_lifts_automatation.py        # Upload POIs to admin panel
+│   ├── catedral_lifts_from_osm.py # Catedral Alta Patagonia (Argentina)
+│   ├── garmisch_lifts_from_osm.py # Garmisch-Partenkirchen (Germany)
+│   ├── gudauri_lifts_from_osm.py # Gudauri (Georgia)
+│   └── admin_upload_from_sheet.py # Universal admin uploader (any resort/sheet)
 │
-├── GCP JSON/                            # Local credentials (ignored)
+├── GCP JSON/ # Local credentials (ignored)
 │   └── geo-content-automatization-xxxx.json
 │
-├── .env.example                         # Example environment config
+├── .env.example # Example environment config
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -99,8 +105,7 @@ python ski_lifts/admin_upload_from_sheet.py \
 ```
 
 **Default behavior:**
-- Parent region: specific resort (defined per script)  
-- Type: Point of Interest  
+- Parent region and type are configurable via CLI or environment variables  
 - Browser runs interactively (`HEADLESS=0`)  
 - Chrome window stays open after execution  
 
@@ -116,21 +121,14 @@ python ski_lifts/admin_upload_from_sheet.py \
 | `SERVICE_ACCOUNT_FILE` | Path to Google Service Account JSON |
 | `ADMIN_URL_ADD` | Admin “Add region” page URL |
 | `PARENT_SEARCH_TEXT` | Parent region numeric ID |
-| `TYPE_VISIBLE_TEXT` | Region type dropdown value |
-| `SPREADSHEET_NAME` |
+| `PARENT_VISIBLE_TEXT` | Parent region visible text (Select2 entry) |
+| `TYPE_VISIBLE_TEXT` | Region type dropdown value (e.g., “Point of Interest”) |
+| `SPREADSHEET_NAME` | Google Sheet name that stores lift/POI data |
+| `WORKSHEET_NAME` | Sheet tab name within the spreadsheet |
 | `DRY_RUN` | Skip Selenium actions (1 = test mode) |
 | `HEADLESS` | Run Chrome invisibly (1 = headless mode) |
 
-Use --dry-run to preview without Selenium.
-
-And tweak the **Structure** section to include the universal uploader:
-```md
-├── ski_lifts/
-│   ├── catedral_lifts_from_osm.py       # Catedral Alta Patagonia (Argentina)
-│   ├── garmisch_lifts_from_osm.py       # Garmisch-Partenkirchen (Germany)
-│   ├── gudauri_lifts_from_osm.py        # Gudauri (Georgia)
-│   └── admin_upload_from_sheet.py       # Universal admin uploader (any resort/sheet)
-```
+Use `--dry-run` to preview without Selenium.
 ---
 
 ## 🧪 Example Use Case
