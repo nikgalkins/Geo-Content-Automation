@@ -9,10 +9,10 @@ A Name_en | B Name_ru | C Genitive_ru | D Locative_ru | E lat | F lon
 Usage (CLI overrides env vars):
   python ski_lifts/admin_upload_from_sheet.py \
     --spreadsheet "POIs" \
-    --worksheet "Gudauri" \
+    --worksheet "Shymbulak" \
     --admin-url "https://content.ostrovok.in/admin/geo/region/add/" \
-    --parent-id "6139982" \
-    --parent-visible "6139982, Gudauri, GE (City)" \
+    --parent-id "354" \
+    --parent-visible "354, Almaty, KZ (City)" \
     --type-visible "Point of Interest"
 
 Environment variables (each has a sensible default):
@@ -51,12 +51,12 @@ DEFAULTS = {
     "SERVICE_ACCOUNT_FILE": "GCP JSON/geo-content-automatization-7039378bbe60.json",
 
     "ADMIN_URL_ADD": "https://content.ostrovok.in/admin/geo/region/add/",
-    "PARENT_SEARCH_TEXT": "6139982",
-    "PARENT_VISIBLE_TEXT": "6139982, Gudauri, GE (City)",
+    "PARENT_SEARCH_TEXT": "354",
+    "PARENT_VISIBLE_TEXT": "354, Almaty, KZ (City)",
     "TYPE_VISIBLE_TEXT": "Point of Interest",
 
     "SPREADSHEET_NAME": "POIs",
-    "WORKSHEET_NAME": "Gudauri",
+    "WORKSHEET_NAME": "Shymbulak",
 
     "DRY_RUN": "0",
     "HEADLESS": "0",
