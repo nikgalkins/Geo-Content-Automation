@@ -30,13 +30,16 @@ automatization-scripts/
 ├── ski_lifts/
 │   ├── catedral_lifts_from_osm.py # Catedral Alta Patagonia (Argentina)
 │   ├── garmisch_lifts_from_osm.py # Garmisch-Partenkirchen (Germany)
-│   ├── gudauri_lifts_from_osm.py # Gudauri (Georgia)
+│   ├── gudauri_lifts_from_osm.py  # Gudauri (Georgia)
 │   └── admin_upload_from_sheet.py # Universal admin uploader (any resort/sheet)
+├── slugs/
+│   ├── slugs_regions_parsing.py   # Reads region data from admin by slug and writes to Google Sheets
+│   └── slugs_checking.py          # Optional: validation script for region slugs
 │
-├── GCP JSON/ # Local credentials (ignored)
+├── GCP JSON/                      # Local credentials (ignored)
 │   └── geo-content-automatization-xxxx.json
 │
-├── .env.example # Example environment config
+├── .env.example                   # Example environment config
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -75,8 +78,7 @@ cp .env.example .env
 
 ### 🏔️ Fetch ski lift coordinates (from OSM)
 
-Each resort script reads lift names from Google Sheets and updates
-latitude, longitude, and OSM metadata (E..J columns).
+Each resort script reads lift names from Google Sheets and updates latitude, longitude, and OSM metadata (E–J columns).
 
 ```bash
 # Catedral Alta Patagonia (Argentina)
@@ -109,6 +111,17 @@ python ski_lifts/admin_upload_from_sheet.py \
 - Browser runs interactively (`HEADLESS=0`)  
 - Chrome window stays open after execution  
 
+### 🌐 Parse Regions from Admin by Slugs
+
+Automates fetching of region data (raw string, ID, name, country) for each slug listed in Google Sheets.
+
+```bash
+python slugs/slugs_regions_parsing.py
+```
+
+**Columns updated automatically:**  
+`B: Region_raw`, `C: Region_id`, `D: Region_name`, `E: Region_country`
+
 ---
 
 ## 🧰 Environment Variables
@@ -118,17 +131,18 @@ python ski_lifts/admin_upload_from_sheet.py \
 | `CHROME_BINARY` | Path to Chrome executable |
 | `USER_DATA_DIR` | Chrome user profile for Selenium |
 | `CHROMEDRIVER` | Path to ChromeDriver |
-| `SERVICE_ACCOUNT_FILE` | Path to Google Service Account JSON |
-| `ADMIN_URL_ADD` | Admin “Add region” page URL |
+| `CREDENTIALS_FILE` | Path to Google Service Account JSON |
+| `ADMIN_URL_ADD` | Admin "Add region" page URL |
 | `PARENT_SEARCH_TEXT` | Parent region numeric ID |
 | `PARENT_VISIBLE_TEXT` | Parent region visible text (Select2 entry) |
-| `TYPE_VISIBLE_TEXT` | Region type dropdown value (e.g., “Point of Interest”) |
+| `TYPE_VISIBLE_TEXT` | Region type dropdown value (e.g., "Point of Interest") |
 | `SPREADSHEET_NAME` | Google Sheet name that stores lift/POI data |
 | `WORKSHEET_NAME` | Sheet tab name within the spreadsheet |
-| `DRY_RUN` | Skip Selenium actions (1 = test mode) |
-| `HEADLESS` | Run Chrome invisibly (1 = headless mode) |
+| `DRY_RUN` | Skip Selenium actions (`1` = test mode) |
+| `HEADLESS` | Run Chrome invisibly (`1` = headless mode) |
 
 Use `--dry-run` to preview without Selenium.
+
 ---
 
 ## 🧪 Example Use Case
